@@ -1,6 +1,4 @@
-//! Records a WAV file using the default input device and default input format.
-//!
-//! The input data is recorded to "$CARGO_MANIFEST_DIR/recorded.wav".
+
 use std::collections::VecDeque;
 use std::sync::{Arc, RwLock};
 
@@ -51,8 +49,6 @@ fn model(app: &App) -> Model {
     Model { stream, buffer }
 }
 
-// A function that captures the audio from the buffer and
-// writes it into the the WavWriter.
 fn capture_fn(audio: &mut CaptureModel, buffer: &Buffer) {
     let mut samples_buffer = audio.buffer.write().unwrap();
 
@@ -65,7 +61,6 @@ fn capture_fn(audio: &mut CaptureModel, buffer: &Buffer) {
         }
     }
 
-    // dbg!("buf size {}", samples_buffer.len());
 }
 
 fn key_pressed(_app: &App, model: &mut Model, key: Key) {
@@ -87,15 +82,11 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
     draw.background().color(BLACK);
 
-    // frame.clear(DIMGRAY);
-
     let mut points = [Vec2::ZERO; MAX_BUFFER_SIZE];
     let first_index = 0;
     let last_index = points.len() - 1;
 
     let sample_buf = model.buffer.read().unwrap();
-
-    
 
     for (index, point_ref) in points.iter_mut().enumerate() {
         // Calculate the `x` position from the index
@@ -114,15 +105,9 @@ fn view(app: &App, model: &Model, frame: Frame) {
         *point_ref = pt2(window_x, window_y);
     }
 
-    // dbg!(&points);
     // Fill with black to obscure lines behind this one
     draw.polygon().color(BLACK).points(points);
 
-    // dbg!(win.bottom());
-    // dbg!(win.top());
-
-    // dbg!(win.left());
-    // dbg!(win.right());
     // Draw white outline
     draw.path()
         .stroke()
